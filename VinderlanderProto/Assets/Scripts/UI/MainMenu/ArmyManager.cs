@@ -20,7 +20,6 @@ public class ArmyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gameController.GetComponent<GameController>().alliedArmy = alliedArmy;
         fundDisplay.text = "Funds: " + Money;
         if (moneyOptions.value == 0)
         {

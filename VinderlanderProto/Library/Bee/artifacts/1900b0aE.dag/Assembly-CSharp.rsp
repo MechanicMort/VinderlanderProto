@@ -382,6 +382,7 @@
 "Assets/Scripts/UI/MainMenu/Quit.cs"
 "Assets/Scripts/UI/MovementOrders/MovementFromUI.cs"
 "Assets/Scripts/UI/UnitCard.cs"
+"Assets/Scripts/World/SunAndMoon.cs"
 -langversion:9.0
 
 /deterministic

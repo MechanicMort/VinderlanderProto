@@ -5,13 +5,23 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
 
-    public GameObject[] alliedArmy;
-    public GameObject[] enemyArmy;
-    public string currentGamemode;
+    public float timeOfDay;
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(transform.gameObject);
+        StartCoroutine("MoveTime");
+        //DontDestroyOnLoad(transform.gameObject);
+    }
+
+    private IEnumerator MoveTime()
+    {
+        yield return new WaitForSeconds(0.1f);
+        timeOfDay += 0.1f;
+        if (timeOfDay >= 24)
+        {
+            timeOfDay = 0;
+        }
+        StartCoroutine("MoveTime");
     }
 
     // Update is called once per frame
