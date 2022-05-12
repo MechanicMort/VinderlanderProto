@@ -55,11 +55,14 @@ public class PlayerController : MonoBehaviour
         if (isPlanningMode)
         {
             playerCameraParentParent.position =transform.position;
+            playerCam.GetComponent<PlaceBuilding>().isBuildMode = false;
+            playerCam.GetComponent<PlaceBuilding>().canBuild = false;
         }
         else
         {
             transform.rotation = new Quaternion(0, 0, 0, 0);
             playerCameraParentParent.position = new Vector3(transform.position.x, 250, transform.position.z);
+            playerCam.GetComponent<PlaceBuilding>().canBuild = true;
         }
         isPlanningMode = !isPlanningMode;
     }
@@ -121,7 +124,10 @@ public class PlayerController : MonoBehaviour
             playerCameraParentParent.transform.Translate(moveDirection);// += new Vector3(moveDirection.x,0,moveDirection.y);
             rotation.y += Input.GetAxis("Mouse X") * lookSpeed;
             rotation.x += -Input.GetAxis("Mouse Y") * lookSpeed;
-            playerCameraParent.localRotation = Quaternion.Euler(rotation.x, rotation.y, 0);
+            if (playerCam.GetComponent<PlaceBuilding>().isBuildMode == false)
+            {
+                playerCameraParent.localRotation = Quaternion.Euler(rotation.x, rotation.y, 0);
+            }
             //transform.eulerAngles = new Vector2(0, rotation.y);
         }
 
