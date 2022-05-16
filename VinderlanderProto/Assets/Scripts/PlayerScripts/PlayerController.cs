@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    public GameObject lantern;
     public Camera playerCam;
     public float speed = 7.5f;
     public float panSpeed = 2f;
@@ -47,7 +48,10 @@ public class PlayerController : MonoBehaviour
         {
             EnterPlanning();
         }
-
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            lantern.SetActive(!lantern.activeInHierarchy);
+        }
     }
 
     public void EnterPlanning()

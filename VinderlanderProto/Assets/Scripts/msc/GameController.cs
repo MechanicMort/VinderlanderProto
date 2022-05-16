@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     public GameObject woodDisplay;
     public GameObject stoneDisplay;
     public GameObject metalDisplay;
+    public GameObject timeDisplay;
 
     public float timeOfDay;
     public float timeStep = 0.1f;
@@ -35,19 +36,33 @@ public class GameController : MonoBehaviour
         {
             timeOfDay = 0;
         }
+        timeDisplay.GetComponent<TextMeshProUGUI>().text = timeOfDay.ToString();
         StartCoroutine("MoveTime");
     }
 
     private void DisplayResources()
     {
-        woodDisplay.GetComponent<TextMeshProUGUI>().text = "Wood = " + ResourcesStored["Wood"];
-        stoneDisplay.GetComponent<TextMeshProUGUI>().text = "Stone =" + ResourcesStored["Stone"];
-        metalDisplay.GetComponent<TextMeshProUGUI>().text = "Metal =" + ResourcesStored["Metal"];
+        woodDisplay.GetComponent<TextMeshProUGUI>().text = "Wood = " + ResourcesStored["Wood"] + "/" + GetResources("Wood");
+        stoneDisplay.GetComponent<TextMeshProUGUI>().text = "Stone =" + ResourcesStored["Stone"] + "/" + GetResources("Stone");
+        metalDisplay.GetComponent<TextMeshProUGUI>().text = "Metal =" + ResourcesStored["Metal"] + "/" + GetResources("Metal");
     }
 
-    private void GetResources()
+    private float GetResources(string resource)
     {
+        float storeSpace = 0;
+        float storageUsed = 0;
+        GameObject[] storages = GameObject.FindGameObjectsWithTag("StorageLocation");
         //loop through resource depos and check contents
+        for (int i = 0; i < storages.Length; i++)
+        {
+            if (storages[i].GetComponent<Storage>().storing == resource)
+            {
+                storeSpace += storages[i].GetComponent<Storage>().maxStored;
+                storageUsed += storages[i].GetComponent<Storage>().stored;
+            }
+        }
+        ResourcesStored[resource] = storageUsed;
+        return  storeSpace;
     }
 
     // Update is called once per frame
