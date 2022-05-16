@@ -265,11 +265,11 @@ public class PawnController : MonoBehaviour
                 if (isCharging && enemy != null)
                 {
                     isCharging = false;
-                    enemy.GetComponent<PawnController>().TakeDamage(pawnMeleeDamage + Mathf.Sqrt(navAgent.velocity.sqrMagnitude) + heightdif, pawnMeleePierce, true);
+                    enemy.GetComponent<PawnController>().TakeDamage(pawnMeleeDamage,  Mathf.Sqrt(navAgent.velocity.sqrMagnitude) + heightdif, pawnMeleePierce,false);
                 }
                 else if (enemy != null)
                 {
-                    enemy.GetComponent<PawnController>().TakeDamage(pawnMeleeDamage + heightdif, pawnMeleePierce, false);
+                    enemy.GetComponent<PawnController>().TakeDamage(pawnMeleeDamage + heightdif,0, pawnMeleePierce,false);
                 }
             }          
             else if (enemy == null)
@@ -298,19 +298,17 @@ public class PawnController : MonoBehaviour
         pawnMoveSpeed = chargeSpeed;
         isCharging = true;
     }
-    public void TakeDamage(float damagedealt, float armourPierce,bool charged)
+    public void TakeDamage(float damagedealt, float chargeDamage, float armourPierce,bool ranged)
     {
-     
-        float armourBlockPercent = 0;
-        if (charged == true)
+
+
+        if (ranged)
         {
-            damagedealt *= 1 - (pawnChargeDefence);
+            damagedealt *= pawnShieldBonus;
         }
-        if (pawnArmour > 0)
-        {
-            armourBlockPercent = pawnArmour * 1 - armourBlockPercent;
-        }
-        damagedealt = damagedealt * 1 - armourBlockPercent;
+        chargeDamage *= pawnChargeDefence;    
+        damagedealt *= (pawnArmour - armourPierce);  
+        damagedealt += chargeDamage;
         if (damagedealt > 0)
         {
             hP -= damagedealt;

@@ -80,7 +80,7 @@ public class BluePrint : MonoBehaviour
     {
         if (materialsNeeded.Count == 0)
         {
-            print(materialsNeeded.Count);
+           // print(materialsNeeded.Count);
             return true;
         }
         return false;

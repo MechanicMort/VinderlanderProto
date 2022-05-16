@@ -368,6 +368,7 @@
 "Assets/Scripts/Buildings/BluePrint.cs"
 "Assets/Scripts/Buildings/Building.cs"
 "Assets/Scripts/Buildings/PlaceBuilding.cs"
+"Assets/Scripts/Buildings/Storage.cs"
 "Assets/Scripts/msc/GameController.cs"
 "Assets/Scripts/msc/LockMouse.cs"
 "Assets/Scripts/msc/LookAtPlayer.cs"

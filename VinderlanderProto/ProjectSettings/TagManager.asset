@@ -6,6 +6,11 @@ TagManager:
   tags:
   - BluePrint
   - CameraHolder
+  - Dead
+  - RetreatPos
+  - Formation
+  - Enemy
+  - StorageLocation
   layers:
   - Default
   - TransparentFX

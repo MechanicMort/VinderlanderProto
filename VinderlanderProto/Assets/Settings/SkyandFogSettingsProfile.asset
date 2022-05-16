@@ -146,21 +146,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d877a03bef431a847adca8ab343db3e1, type: 3}
   m_Name: RayTracingSettings
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   rayBias:
-    m_OverrideState: 0
-    m_Value: 0.001
+    m_OverrideState: 1
+    m_Value: 0.0033
   extendShadowCulling:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   extendCameraCulling:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   directionalShadowRayLength:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1000
   directionalShadowFallbackIntensity:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
 --- !u!114 &-5156025583086645635
 MonoBehaviour:
@@ -192,7 +192,7 @@ MonoBehaviour:
     m_Value: {x: 0, y: 0}
   lowestCloudAltitude:
     m_OverrideState: 1
-    m_Value: 561.5
+    m_Value: 228.1
   cloudThickness:
     m_OverrideState: 1
     m_Value: 11218.9
@@ -222,7 +222,7 @@ MonoBehaviour:
     m_Value: 0
   cloudPreset:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 3
   cumulusMap:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -393,7 +393,7 @@ MonoBehaviour:
     m_Value: 0.25
   shapeFactor:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 0.78
   shapeScale:
     m_OverrideState: 1
     m_Value: 2.5
@@ -402,7 +402,7 @@ MonoBehaviour:
     m_Value: {x: 0, y: 0, z: 0}
   erosionFactor:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.166
   erosionScale:
     m_OverrideState: 1
     m_Value: 50
@@ -424,7 +424,7 @@ MonoBehaviour:
       mode: 3
       customValue: 100
       additiveValue: 1
-      multiplyValue: 10
+      multiplyValue: 3
   orientation:
     m_OverrideState: 1
     m_Value:

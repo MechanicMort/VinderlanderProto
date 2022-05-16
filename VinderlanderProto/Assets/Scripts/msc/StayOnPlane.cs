@@ -13,22 +13,21 @@ public class StayOnPlane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int layerMask = 1 << 9;
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position,transform.up , out hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(transform.position,transform.up , out hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
         {
 
             transform.position = hit.point;    
         }   
-        else if (Physics.Raycast(transform.position,-transform.up , out hit, Mathf.Infinity, layerMask))
+        else if (Physics.Raycast(transform.position,-transform.up , out hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
         {
             transform.position = hit.point;   
         }
         else
         {
-            transform.position =  Vector3.Lerp(transform.position, transform.position + new Vector3(0,1,0), 0.01f);
+            transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(0, 1, 0), 0.01f);
         }
     }
 }

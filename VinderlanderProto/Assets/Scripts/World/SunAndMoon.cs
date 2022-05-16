@@ -21,7 +21,7 @@ public class SunAndMoon : MonoBehaviour
     void Update()
     {
 
-         lightSource.transform.Rotate(new Vector3(0.1f, 0, 0)); 
+         lightSource.transform.Rotate(new Vector3(0.05f, 0, 0)); 
 
     }
 }

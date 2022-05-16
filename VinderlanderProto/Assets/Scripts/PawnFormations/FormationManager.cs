@@ -82,6 +82,7 @@ public class FormationManager : MonoBehaviour
 
         GetUnitRanged();
         StartCoroutine(UpdateMorale());
+        UpdateShape(new Vector3(1,0,0));
     }
 
 
@@ -248,7 +249,7 @@ public class FormationManager : MonoBehaviour
 
     private void UpdateShapeLength()
     {
-        FormationShape.transform.localScale = new Vector3(5 * formationSpacingx,1,unitDepth *formationSpacingz);
+        FormationShape.transform.localScale = new Vector3(formationSpacingx,1,(formationSpacingz * unitDepth)/7);
     }
 
 

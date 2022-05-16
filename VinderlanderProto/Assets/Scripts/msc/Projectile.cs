@@ -72,7 +72,7 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "PlayerPawn" )
         {
             transform.SetParent(collision.transform, true);
-            collision.gameObject.GetComponent<PawnController>().TakeDamage(projectileDamage, projectilePierce, false);
+            collision.gameObject.GetComponent<PawnController>().TakeDamage(projectileDamage,0, projectilePierce,true);
             rgb.isKinematic = true;
             this.StopAllCoroutines();
             Trail.emitting = false;
