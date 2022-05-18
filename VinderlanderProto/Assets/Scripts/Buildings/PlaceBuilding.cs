@@ -67,8 +67,6 @@ public class PlaceBuilding : MonoBehaviour
                         walls.Add(tempbuildingDisplay2);
                         tempbuildingDisplay2.transform.position = waypoints[lastWaypoint];
                         tempbuildingDisplay2.transform.localScale = new Vector3(1, 7, Vector3.Distance(waypoints[lastWaypoint], waypoints[currentWaypoint]));
-                        print(lastWaypoint);
-                        print(currentWaypoint);
                         tempbuildingDisplay2.transform.LookAt(Vector3.MoveTowards(waypoints[lastWaypoint], waypoints[currentWaypoint], Vector3.Distance(waypoints[lastWaypoint], waypoints[currentWaypoint]) / 2));
                         tempbuildingDisplay2.transform.position = Vector3.MoveTowards(waypoints[lastWaypoint], waypoints[currentWaypoint], Vector3.Distance(waypoints[lastWaypoint], waypoints[currentWaypoint]) / 2);
                         

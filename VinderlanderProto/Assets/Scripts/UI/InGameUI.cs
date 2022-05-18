@@ -88,12 +88,10 @@ public class InGameUI : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            int layerMask = 1 << 7;
-
             RaycastHit hit;
             Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, 100000, layerMask))
+            if (Physics.Raycast(ray, out hit, 100000, LayerMask.GetMask("Formations")))
             {
 
                 Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
