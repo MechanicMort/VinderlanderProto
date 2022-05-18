@@ -7,6 +7,7 @@ public class PlaceBuilding : MonoBehaviour
     public List<Vector3> waypoints = new List<Vector3>();
     public List<GameObject> walls = new List<GameObject>();
     private int currentWaypoint = -1;
+    private int lastWaypoint = -2;
 
     public GameObject bluePrintToPlace;
     public GameObject tempbluePrintToPlace;
@@ -23,6 +24,7 @@ public class PlaceBuilding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (canBuild && Input.GetKeyDown(KeyCode.Q))
         {
             isBuildMode = !isBuildMode;
@@ -35,6 +37,7 @@ public class PlaceBuilding : MonoBehaviour
         else
         {
             tempbuildingDisplay.transform.position = new Vector3(0, -300, 0);
+            waypoints.Clear();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
@@ -54,22 +57,23 @@ public class PlaceBuilding : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                    if (waypoints.Count > 1)
-                    {
-
-                        GameObject tempbuildingDisplay2 = new GameObject();
-                        walls.Add(tempbuildingDisplay2);
-                        for (int i = 0; i < waypoints.Count - 1; i++)
-                        {
-                            tempbuildingDisplay2 = Instantiate(buildingDisplay);
-                            tempbuildingDisplay2.transform.position = waypoints[i];
-                            tempbuildingDisplay2.transform.localScale = new Vector3(1, 7, Vector3.Distance(waypoints[i], waypoints[i + 1]));
-                            tempbuildingDisplay2.transform.LookAt(Vector3.MoveTowards(waypoints[i], waypoints[i + 1], Vector3.Distance(waypoints[i], waypoints[i + 1]) / 2));
-                            tempbuildingDisplay2.transform.position = Vector3.MoveTowards(waypoints[i], waypoints[i + 1], Vector3.Distance(waypoints[i], waypoints[i + 1]) / 2);
-                        }
-                    }
                     waypoints.Add(hit.point);
                     currentWaypoint += 1;
+                    lastWaypoint += 1;
+                    if (waypoints.Count > 1)
+                    {
+                        GameObject tempbuildingDisplay2 = new GameObject();
+                        tempbuildingDisplay2 = Instantiate(buildingDisplay);
+                        walls.Add(tempbuildingDisplay2);
+                        tempbuildingDisplay2.transform.position = waypoints[lastWaypoint];
+                        tempbuildingDisplay2.transform.localScale = new Vector3(1, 7, Vector3.Distance(waypoints[lastWaypoint], waypoints[currentWaypoint]));
+                        print(lastWaypoint);
+                        print(currentWaypoint);
+                        tempbuildingDisplay2.transform.LookAt(Vector3.MoveTowards(waypoints[lastWaypoint], waypoints[currentWaypoint], Vector3.Distance(waypoints[lastWaypoint], waypoints[currentWaypoint]) / 2));
+                        tempbuildingDisplay2.transform.position = Vector3.MoveTowards(waypoints[lastWaypoint], waypoints[currentWaypoint], Vector3.Distance(waypoints[lastWaypoint], waypoints[currentWaypoint]) / 2);
+                        
+                    }
+
                   //  tempbluePrintToPlace = Instantiate(bluePrintToPlace);
                    // tempbluePrintToPlace.transform.position = hit.point;
                 }
@@ -85,12 +89,14 @@ public class PlaceBuilding : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
                 currentWaypoint = -1;
+                lastWaypoint = -2;
                 if (waypoints.Count > 1)
                 {
-                    //placebuildings
-                    GameObject theBuilding = new GameObject();
+
                     for (int i = 0; i < waypoints.Count - 1; i++)
                     {
+                        //placebuildings
+                        GameObject theBuilding = new GameObject();
                         theBuilding = Instantiate(bluePrintToPlace);
                         theBuilding.transform.position = waypoints[i];
                         theBuilding.transform.localScale = new Vector3(1, 1, Vector3.Distance(waypoints[i], waypoints[i + 1]));
