@@ -11,6 +11,8 @@ TagManager:
   - Formation
   - Enemy
   - StorageLocation
+  - Person
+  - NameGen
   layers:
   - Default
   - TransparentFX

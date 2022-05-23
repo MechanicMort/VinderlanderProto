@@ -10,6 +10,7 @@ public class FormationManager : MonoBehaviour
     public float UnitSize;
     public float unitDepth;
     public float unitWidth;
+    public int iDone;
 
     public List<GameObject> UnitManaged;
     public GameObject UnitPawn;
@@ -255,7 +256,8 @@ public class FormationManager : MonoBehaviour
 
     public bool CheckOrdersComplete()
     {
-        int iDone = 0;
+        iDone = 0;
+
         for (int i = 0; i < UnitManaged.Count; i++)
         {
             if (UnitManaged[i].GetComponent<PawnController>().isOrderComplete == true)
@@ -263,7 +265,7 @@ public class FormationManager : MonoBehaviour
                 iDone++;
             }               
         }
-        if (iDone >= UnitManaged.Count / 1.5)
+        if (iDone >= UnitManaged.Count / 1.2)
         {
             return true;    
             
@@ -331,6 +333,10 @@ public class FormationManager : MonoBehaviour
     private IEnumerator looper()
     {
         yield return new WaitForSeconds(0.1f);
+        if (CheckOrdersComplete())
+        {
+            goingToTemp.SetActive(false);
+        }
         if (Orders.Count != 0)
         {
             DoOrders();
@@ -356,19 +362,22 @@ public class FormationManager : MonoBehaviour
         if (Orders.Count == 0)
         {
             StopAllCoroutines();
+
         }
         if (CheckOrdersComplete() && Orders.Count > 0 && isBroken == false)
         {
             if (Orders[0].ToString() == "MoveTo")
             {
                 goingToTemp.SetActive(true);
-                goingToTemp.transform.position = (Vector3)Orders[1];
+
                 for (int i = 0; i < UnitManaged.Count; i++)
                 {
                     UnitManaged[i].GetComponent<PawnController>().Moving();
                 }
                 this.gameObject.transform.rotation = Player.transform.rotation;
                 this.gameObject.transform.position = (Vector3)Orders[1];
+                goingToTemp.transform.position = this.gameObject.transform.position;
+                goingToTemp.transform.rotation = this.gameObject.transform.rotation;
                 FormationShape.transform.rotation = new Quaternion(0, 0, 0, 0);
                 Orders.RemoveAt(0);
                 Orders.RemoveAt(0);
@@ -516,7 +525,10 @@ public class FormationManager : MonoBehaviour
         List<GameObject> tempar = new List<GameObject>();
         for (int i = 0; i < UnitManaged.Count; i++)
         {
-            tempar.Add(UnitManaged[i]); 
+            if (UnitManaged[i].GetComponent<PawnController>().inFormation)
+            {
+                tempar.Add(UnitManaged[i]);
+            }
         }
         for (int i = 0; i < UnitManaged.Count; i++)
         {

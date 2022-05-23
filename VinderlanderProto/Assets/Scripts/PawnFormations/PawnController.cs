@@ -2,10 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using RandomNameGeneratorLibrary;
 
 public class PawnController : MonoBehaviour
 {
-    [Header("Stats")]
+    [Header("Animation")]
+    public Animator animController;
+    [Header("Living Stats")]
+
+    public string pawnName;
+    //? 
+    //?
+    public string gender = "?";
+
+
+    public float Hydration;
+    public float maxHydration;
+    public float satiation;
+    public float maxSatiation;
+    public float happiness;
+    public float hygenie;
+    public float maxHygenie;
+    public float rest;
+    public float maxRest;
+    public float timeOfDay;
+
+
+    public bool sick;
+    public bool starving;
+    public bool thirsty;
+    public bool tired;
+
+
+    [Header("Combat Stats")]
     public float pawnMeleeRange;
     public float pawnMeleeDamage;
     public float pawnMeleePierce;
@@ -37,6 +66,8 @@ public class PawnController : MonoBehaviour
     public bool isRanged;
     public bool isHalting;
     public bool isHoldingFire;
+   //need to make formations on the fly using gui interfaces
+    public bool inFormation;
 
     private bool isRunning;
     private bool isFleeing;
@@ -48,24 +79,28 @@ public class PawnController : MonoBehaviour
 
     [Header("GameObjects")]
     public GameObject FiringPos;
+    public GameObject NameGen;
     public GameObject movingTo;
     public GameObject Quiver;
+    public GameObject personCard;
     private GameObject movingToInstance;
-
     private Vector3 storedOrder;
 
     private NavMeshAgent navAgent;
 
-
     private List<GameObject> nearEnemies = new List<GameObject>() ;
-
 
     // Start is called before the first frame update
     void Start()
     {
+        NameGen = GameObject.FindGameObjectWithTag("NameGen");
+        pawnName = NameGen.GetComponent<NameGenerator>().GenerateRandomNameMale();
         isAttacking = false; 
         hP = hPMax;
         stamina = staminaMax;
+        satiation = maxSatiation;
+        Hydration = maxHydration;
+        rest = maxRest;
         isOrderComplete = false;
         movingToInstance = Instantiate(movingTo);
         movingToInstance.SetActive(false);
@@ -77,8 +112,6 @@ public class PawnController : MonoBehaviour
         }
         StartCoroutine("CheckInCombat");
     }
-
-
     public void objectPool()
     {
         Quiver = transform.GetChild(2).transform.GetChild(0).gameObject;
@@ -92,7 +125,6 @@ public class PawnController : MonoBehaviour
             isRanged = false;
         }
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -125,9 +157,6 @@ public class PawnController : MonoBehaviour
         }
 
     }
-
-    
-
     private void UpdateSpeed()
     {
         if (isInCombat == false)
@@ -142,15 +171,12 @@ public class PawnController : MonoBehaviour
         }
 
     }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
       //  float range = GetRange();
       //  Gizmos.DrawSphere(transform.position, range);
     }
-
-
     private IEnumerator CheckInCombat()
     {
         bool CombatFlip = false;
@@ -185,7 +211,6 @@ public class PawnController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         StartCoroutine("CheckInCombat");
     }
-
   public void  RangedAttack(GameObject enemyFormation)
     {
         StartCoroutine(RangedAttackCoroutine(enemyFormation));
@@ -233,6 +258,11 @@ public class PawnController : MonoBehaviour
         }    
     }
 
+
+    public void PerformJobs()
+    {
+
+    }
 
     public IEnumerator ReadyAttack()
     {
@@ -283,15 +313,11 @@ public class PawnController : MonoBehaviour
         yield return new WaitForSeconds(pawnAttackSpeed * 1- (stamina / 100));
         isAttacking = false;
     }
-
-
-
     public void Disengage()
     {
         isFleeing = true;
         StopAllCoroutines();
     }
-
     public void Charge()
     {
         navAgent.stoppingDistance = pawnMeleeRange;
@@ -315,24 +341,59 @@ public class PawnController : MonoBehaviour
         }
         isInCombat = true;
     }
-
     public bool CheckDead()
     {
+        if (satiation <= 0)
+        {
+            starving = true;
+        }
+        else
+        {
+            starving = false;
+        }
+        if (Hydration <= 0)
+        {
+            thirsty = true;
+        }
+        else
+        {
+            thirsty = false;
+        }
+        if (rest <= 0)
+        {
+            tired = true;
+        }
+        else
+        {
+            tired = false;
+        }
         if (hP <= 0)
         {
             StopAllCoroutines();
             transform.tag = "Dead";
             transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            transform.rotation = new Quaternion(180, 0, 0, 0);
             movingTo.SetActive(false);
             this.GetComponent<Collider>().isTrigger = true;
             return true;
         }
         return false;
     }
-
     private IEnumerator AdjustFatigue()
     {
         yield return new WaitForSeconds(0.1f);
+       if (satiation > 0)
+        {
+            satiation -= 0.01f;
+        }
+        if (Hydration > 0)
+        {
+            Hydration -= 0.015f;
+        }
+        if (rest > 0)
+        {
+            rest -= 0.01f;
+        }
         if (navAgent.velocity.sqrMagnitude > 0.2)
         {
             if (stamina <= 30 )
@@ -354,14 +415,20 @@ public class PawnController : MonoBehaviour
           
 
         }
-        else if(stamina <= 100)
+        else if(stamina <= 100 && !tired)
         {
-            stamina += 0.02f;
+            stamina += 0.04f * (satiation/100);
         }
-        
+        if (starving)
+        {
+            hP -= 0.005f;
+        }
+        if (thirsty)
+        {
+            hP -= 0.005f;
+        }
         StartCoroutine("AdjustFatigue");
     }
-
     public void ToggleRun()
     {
         if (isRunning == true)
@@ -379,7 +446,7 @@ public class PawnController : MonoBehaviour
     public void CheckMarker()
     {
    
-        if (Vector3.Distance(this.transform.position, movingToInstance.transform.position) <= 2.5f)
+        if (Vector3.Distance(this.transform.position, movingToInstance.transform.position) <= 2.8f)
         {
             movingToInstance.SetActive(false);                                                                                                                                                                                         
             isOrderComplete = true;
@@ -393,14 +460,11 @@ public class PawnController : MonoBehaviour
             isOrderComplete = false;
         }
     }
-
- 
     public void Moving()
     {
         isCharging = false;
         
     }   
-
     public void NewOrder(Vector3 movePos)
     {
         isOrderComplete = false;
@@ -435,13 +499,9 @@ public class PawnController : MonoBehaviour
         }  
         storedOrder = movePos;
     }
-
     public void LookAt(Vector3 lookAt)
     {
         transform.LookAt(lookAt);
 
     }
-
-
-
 }

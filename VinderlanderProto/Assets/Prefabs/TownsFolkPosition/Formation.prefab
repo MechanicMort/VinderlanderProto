@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &542489385
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 542489386}
+  m_Layer: 8
+  m_Name: FlagPlaceHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &542489386
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542489385}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4579702145705437729}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4579702145705437740
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,9 +44,10 @@ GameObject:
   - component: {fileID: 4579702145705437743}
   - component: {fileID: 4579702145705437742}
   - component: {fileID: 4579702145705437741}
-  m_Layer: 0
+  - component: {fileID: 1509667358}
+  m_Layer: 8
   m_Name: Formation
-  m_TagString: Untagged
+  m_TagString: Formation
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,9 +61,10 @@ Transform:
   m_GameObject: {fileID: 4579702145705437740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 30.8, y: 10.459636, z: 84.4}
-  m_LocalScale: {x: 70.78713, y: 10.043279, z: 70.78713}
+  m_LocalScale: {x: 7, y: 1, z: 7}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 542489386}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -110,11 +143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4070b89081aca44b87435920e4d4f21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitSize: 0
+  UnitSize: 10
   unitDepth: 0
   unitWidth: 0
   UnitManaged: []
-  UnitPawn: {fileID: 0}
+  UnitPawn: {fileID: 2982396613703700004, guid: 8a2eb91b8719af943a47767f073242fd,
+    type: 3}
   FormationShape: {fileID: 0}
   goingTo: {fileID: 8522521152553723142, guid: abcb471bdb926084bac5f02e948f7b81, type: 3}
   Forward: {fileID: 0}
@@ -124,19 +158,32 @@ MonoBehaviour:
   MaxFormationHp: 0
   CurrentFormationStamina: 0
   MaxFormationStamina: 0
-  formationSpacingx: 0
-  formationSpacingz: 0
-  formationSpacingxMulti: 0
-  formationSpacingzMulti: 0
+  formationSpacingx: 1.2
+  formationSpacingz: 1
+  formationSpacingxMulti: 1.2
+  formationSpacingzMulti: 1.32
   isFormationRanged: 0
   formationRangedRange: 0
   formationMeleeRange: 0
   StoredFormations:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 5281341434169297319, guid: 3838a62c013def6408a7c4b13e9f699e, type: 3}
+  - {fileID: 6844817551509397221, guid: cb1678c655dd9944c8f067a45b49bcff, type: 3}
+  - {fileID: 7948895938444242843, guid: 8aca4e97a710f0847abf5947879b7d15, type: 3}
   EdgeOfMapLocations:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  UnitCard: {fileID: 0}
+  UnitCard: {fileID: 7076589184627079376, guid: 29778bd90b603264ab2845927a20d83b,
+    type: 3}
+--- !u!114 &1509667358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4579702145705437740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29558e9b4539e05438b5a4a97631765f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

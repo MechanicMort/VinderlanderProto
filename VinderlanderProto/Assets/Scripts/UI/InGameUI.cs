@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InGameUI : MonoBehaviour
 {
@@ -10,10 +11,10 @@ public class InGameUI : MonoBehaviour
     public GameObject formationOrders;
     public GameObject mscOrders;  
     public GameObject baseOrders;  
-    public Text movementOrdersTxt;
-    public Text rotationOrdersTxt;
-    public Text formationOrdersTxt;
-    public Text mscOrdersTxt;
+    public TextMeshProUGUI movementOrdersTxt;
+    public TextMeshProUGUI rotationOrdersTxt;
+    public TextMeshProUGUI formationOrdersTxt;
+    public TextMeshProUGUI mscOrdersTxt;
     public List<GameObject> SelectedUnits;
     public List<GameObject> AttackUnits;
     public List<GameObject> unitCards;
@@ -71,15 +72,13 @@ public class InGameUI : MonoBehaviour
 
     public void SoundTheHorn()
     {
-        if (Input.GetKeyDown(KeyCode.B)) 
+        if (Input.GetKeyDown(KeyCode.O)) 
         {
             for (int i = 0; i < SelectedUnits.Count; i++)
             {
                 SelectedUnits[i].GetComponent<FormationManager>().DoOrders();
             }
-        }
-       
-        
+        }         
     }
 
 
@@ -97,16 +96,12 @@ public class InGameUI : MonoBehaviour
                 Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
                 if (hit.collider.gameObject.tag == "Formation")
                 {
-                    if (hit.collider.gameObject.transform.parent != null)
+                    if (!SelectedUnits.Contains(hit.collider.gameObject))
                     {
-                        if (!SelectedUnits.Contains(hit.collider.gameObject.transform.parent.gameObject))
-                        {
-                            SelectedUnits.Add(hit.collider.gameObject.transform.parent.gameObject);
-                            UnitCards();
-                        }
+                        SelectedUnits.Add(hit.collider.gameObject);
+                        UnitCards();
                     }
-                  
-
+             
                 }
             }
         }
@@ -139,16 +134,47 @@ public class InGameUI : MonoBehaviour
     }
 
 
-
-
-
     public void Orders()
     {
 
+        // DoOrder();
 
-        
+        // 1 open movement orders 
+        if (Input.GetKeyDown(KeyCode.Escape) && isMenu == false && baseOrders.activeInHierarchy)
+        {
+             baseOrders.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.F1) && isMenu == false && !baseOrders.activeInHierarchy)
+        {
+            isMenu = false;
+            baseOrders.SetActive(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1) && isMenu == false)
+        {
+            isMenu = true;
+            movementOrders.SetActive(true);
+            baseOrders.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && isMenu == false)
+        {
+            isMenu = true;
+            rotationOrders.SetActive(true);
+            baseOrders.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && isMenu == false)
+        {
+            isMenu = true;
+            formationOrders.SetActive(true);
+            baseOrders.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && isMenu == false)
+        {
+            isMenu = true;
+            mscOrders.SetActive(true);
+            baseOrders.SetActive(false);
+        }
 
-       // CheckActive();
+        // CheckActive();
         if (movementOrders.activeInHierarchy == true)
         {
 
@@ -164,31 +190,24 @@ public class InGameUI : MonoBehaviour
             {
                 movementOrdersTxt.text += "";
                 string orderType = "MoveTo";
-                int layerMask = 1 << 9;
-
-
                 RaycastHit hit;
 
-                Rect screenRect = new Rect(0, 0, Screen.width, Screen.height);
-                if (screenRect.Contains(Input.mousePosition))
+                Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, LayerMask.GetMask("Formations"), 1000))
                 {
-                    if (playerCam != null)
+                    moveTo = hit.point;
+                    for (int i = 0; i < SelectedUnits.Count; i++)
                     {
-                        Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
-                        if (Physics.Raycast(ray, out hit, layerMask, 1000))
+                        if (i > 0)
                         {
-                            // If the raycast hit a GameObject...
-                            moveTo = hit.point;
-                            SelectedUnits[0].GetComponent<FormationManager>().ReceiveOrder(hit.point, orderType);
+                            Vector3 relativeDistance = SelectedUnits[i-1].transform.position - SelectedUnits[i].transform.position;
+                            moveTo -= relativeDistance;
                         }
+                        SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(moveTo, orderType);
                     }
+
                 }
-                for (int i = 0; i < SelectedUnits.Count-1; i++)
-                {
-                    Vector3 relativeDistance = SelectedUnits[i].transform.position - SelectedUnits[i+1].transform.position;
-                    moveTo -= relativeDistance;
-                    SelectedUnits[i+1].GetComponent<FormationManager>().ReceiveOrder(moveTo, orderType);
-                }
+          
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
@@ -362,33 +381,7 @@ public class InGameUI : MonoBehaviour
 
 
 
-        // DoOrder();
-
-        // 1 open movement orders 
-        if (Input.GetKeyDown(KeyCode.Alpha1) && isMenu == false)
-        {
-            isMenu = true;
-            movementOrders.SetActive(true);
-            baseOrders.SetActive(false);
-        }        
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && isMenu == false)
-        {
-            isMenu = true;
-            rotationOrders.SetActive(true);
-            baseOrders.SetActive(false);
-        }
-        else if(Input.GetKeyDown(KeyCode.Alpha3) && isMenu == false)
-        {
-            isMenu = true;
-            formationOrders.SetActive(true);
-            baseOrders.SetActive(false);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4) && isMenu == false)
-        {
-            isMenu = true;
-            mscOrders.SetActive(true);
-            baseOrders.SetActive(false);
-        }
+ 
         
     }
 }
