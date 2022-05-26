@@ -53,7 +53,7 @@ public class FormationManager : MonoBehaviour
 
     public GameObject UnitCard;
 
-
+    private List<GameObject> tempar = new List<GameObject>();
 
 
 
@@ -503,9 +503,10 @@ public class FormationManager : MonoBehaviour
 
     public void MoveToPos()
     {
+        tempar.Clear();
         Vector3[] tempVerxArray =  FormationShape.GetComponent<MeshFilter>().mesh.vertices;
         Vector3[] tempWorldPos = new Vector3[tempVerxArray.Length];
-
+        int countInFormation = 0;
 
         for (int i = 0; i < tempVerxArray.Length; i++)
         {
@@ -522,15 +523,16 @@ public class FormationManager : MonoBehaviour
         Vector3 nextPos = startx;
         unitDepth = 1;
         unitWidth = 0;
-        List<GameObject> tempar = new List<GameObject>();
+
         for (int i = 0; i < UnitManaged.Count; i++)
         {
             if (UnitManaged[i].GetComponent<PawnController>().inFormation)
             {
                 tempar.Add(UnitManaged[i]);
+                countInFormation += 1;
             }
         }
-        for (int i = 0; i < UnitManaged.Count; i++)
+        for (int i = 0; i < countInFormation; i++)
         {
             float oldDistance = Mathf.Infinity;
             int location = 0;

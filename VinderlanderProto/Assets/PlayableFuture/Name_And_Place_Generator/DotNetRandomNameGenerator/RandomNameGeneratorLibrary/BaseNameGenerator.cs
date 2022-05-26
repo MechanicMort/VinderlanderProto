@@ -37,8 +37,8 @@ namespace RandomNameGeneratorLibrary
         protected static string[] ReadResourceByLine(string resourceFileName)
         {
             // var stream = ReadResourceStreamForFileName(resourceFileName);
-
-            Debug.Log("SHOULD LOAD:::" + resourceFileName);
+//
+      //      Debug.Log("SHOULD LOAD:::" + resourceFileName);
             TextAsset asset = Resources.Load("Resources."+resourceFileName) as TextAsset;
             
             if (asset == null)

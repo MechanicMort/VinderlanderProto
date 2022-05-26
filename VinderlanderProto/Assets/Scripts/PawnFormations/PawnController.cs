@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using RandomNameGeneratorLibrary;
 
 public class PawnController : MonoBehaviour
@@ -11,9 +12,9 @@ public class PawnController : MonoBehaviour
     [Header("Living Stats")]
 
     public string pawnName;
-    //? 
-    //?
-    public string gender = "?";
+    //Male
+    //Female
+    public string gender = "Male";
 
 
     public float Hydration;
@@ -28,11 +29,23 @@ public class PawnController : MonoBehaviour
     public float timeOfDay;
 
 
+    public float closest;
+    public int number;
+
+
+
+
     public bool sick;
     public bool starving;
     public bool thirsty;
     public bool tired;
 
+    public List<string> jobsList = new List<string>();
+
+    public string job;
+    public bool performingJob = false;
+
+    public GameObject resourceCarried;
 
     [Header("Combat Stats")]
     public float pawnMeleeRange;
@@ -93,6 +106,7 @@ public class PawnController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        personCard.GetComponent<PersonCard>().myPerson = this.GetComponent<PawnController>();
         NameGen = GameObject.FindGameObjectWithTag("NameGen");
         pawnName = NameGen.GetComponent<NameGenerator>().GenerateRandomNameMale();
         isAttacking = false; 
@@ -147,6 +161,10 @@ public class PawnController : MonoBehaviour
         }
         if (!CheckDead())
         {
+            if (!inFormation)
+            {
+                PerformJobs();
+            }
             UpdateSpeed();
             CheckMarker();
         }
@@ -259,11 +277,70 @@ public class PawnController : MonoBehaviour
     }
 
 
-    public void PerformJobs()
+    private void OnTriggerEnter(Collider other)
     {
+        if (other.tag == "Resource")
+        {
+            resourceCarried = other.gameObject;
+            job = "Store";
+            performingJob = false;
+            other.transform.SetParent(this.transform);
+        }
 
     }
 
+    public void PerformJobs()
+    {
+
+        if (job == "" && performingJob == false)
+        {
+            closest = Mathf.Infinity;
+            number = -1;
+            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Resource").Length; i++)
+            {
+                //this check should be done before the job is set
+                if (Vector3.Distance(this.transform.position, GameObject.FindGameObjectsWithTag("Resource")[i].transform.position) < closest && !GameObject.FindGameObjectsWithTag("Resource")[i].GetComponent<ResourceChunk>().isTaken)
+                {
+                    closest = Vector3.Distance(this.transform.position, GameObject.FindGameObjectsWithTag("Resource")[i].transform.position);
+                    number = i;
+                }
+            }
+            if (number != -1)
+            {
+                navAgent.destination = GameObject.FindGameObjectsWithTag("Resource")[number].transform.position;
+                GameObject.FindGameObjectsWithTag("Resource")[number].GetComponent<ResourceChunk>().isTaken = true;
+                performingJob = true;
+            }
+        }
+
+        if (job == "Store" && performingJob == false)
+        {
+            closest = Mathf.Infinity;
+            number = -1;
+            for (int i = 0; i < GameObject.FindGameObjectsWithTag("StorageLocation").Length; i++)
+            {
+                //this check should be done before the job is set
+                    if (GameObject.FindGameObjectsWithTag("StorageLocation")[i].GetComponent<Storage>().storing == resourceCarried.GetComponent<ResourceChunk>().resource.resource)
+                    {
+                        if ((GameObject.FindGameObjectsWithTag("StorageLocation")[i].GetComponent<Storage>().maxStored - GameObject.FindGameObjectsWithTag("StorageLocation")[i].GetComponent<Storage>().stored) > resourceCarried.GetComponent<ResourceChunk>().resource.amount)
+                        {
+                            if (Vector3.Distance(this.transform.position, GameObject.FindGameObjectsWithTag("StorageLocation")[i].transform.position) < closest)
+                            {
+                                closest = Vector3.Distance(this.transform.position, GameObject.FindGameObjectsWithTag("StorageLocation")[i].transform.position);
+                                number = i;
+                                print("Found Destination");            
+                            }
+                        }
+                    }
+            }
+            if (number != -1)
+            {
+                print("Set Destination");
+                navAgent.destination = GameObject.FindGameObjectsWithTag("StorageLocation")[number].transform.position;
+                performingJob = true;
+            }
+        }
+    }
     public IEnumerator ReadyAttack()
     {
 

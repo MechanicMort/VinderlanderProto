@@ -384,6 +384,8 @@
 "Assets/Scripts/msc/LockMouse.cs"
 "Assets/Scripts/msc/LookAtPlayer.cs"
 "Assets/Scripts/msc/Projectile.cs"
+"Assets/Scripts/msc/Resource.cs"
+"Assets/Scripts/msc/ResourceChunk.cs"
 "Assets/Scripts/msc/StayOnPlane.cs"
 "Assets/Scripts/PawnFormations/FlagFollowFormation.cs"
 "Assets/Scripts/PawnFormations/FormationManager.cs"
@@ -398,6 +400,7 @@
 "Assets/Scripts/UI/MainMenu/QuickBattle.cs"
 "Assets/Scripts/UI/MainMenu/Quit.cs"
 "Assets/Scripts/UI/MovementOrders/MovementFromUI.cs"
+"Assets/Scripts/UI/PersonCard.cs"
 "Assets/Scripts/UI/UnitCard.cs"
 "Assets/Scripts/World/SunAndMoon.cs"
 -langversion:9.0
