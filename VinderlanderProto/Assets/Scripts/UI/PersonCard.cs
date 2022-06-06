@@ -23,8 +23,6 @@ public class PersonCard : MonoBehaviour
     void Update()
     {
         personName.text = myPerson.pawnName;
-        hungerAmount = myPerson.satiation/100;
-        thirstAmount = myPerson.Hydration / 100;
         healthAmount = myPerson.hP / 100;
         hunger.fillAmount = hungerAmount;
         thirst.fillAmount = thirstAmount;

@@ -15,35 +15,10 @@ public class PawnController : MonoBehaviour
     //Male
     //Female
     public string gender = "Male";
-
-
-    public float Hydration;
-    public float maxHydration;
-    public float satiation;
-    public float maxSatiation;
-    public float happiness;
-    public float hygenie;
-    public float maxHygenie;
-    public float rest;
-    public float maxRest;
     public float timeOfDay;
-
-
     public float closest;
     public int number;
 
-
-
-
-    public bool sick;
-    public bool starving;
-    public bool thirsty;
-    public bool tired;
-
-    public List<string> jobsList = new List<string>();
-
-    public string job;
-    public bool performingJob = false;
 
     public GameObject resourceCarried;
 
@@ -112,9 +87,6 @@ public class PawnController : MonoBehaviour
         isAttacking = false; 
         hP = hPMax;
         stamina = staminaMax;
-        satiation = maxSatiation;
-        Hydration = maxHydration;
-        rest = maxRest;
         isOrderComplete = false;
         movingToInstance = Instantiate(movingTo);
         movingToInstance.SetActive(false);
@@ -139,6 +111,12 @@ public class PawnController : MonoBehaviour
             isRanged = false;
         }
     }
+
+    private void OutOfCombat()
+    {
+        //wander visit baths worship buy food 
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -163,7 +141,7 @@ public class PawnController : MonoBehaviour
         {
             if (!inFormation)
             {
-                PerformJobs();
+                OutOfCombat();
             }
             UpdateSpeed();
             CheckMarker();
@@ -277,70 +255,8 @@ public class PawnController : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Resource")
-        {
-            resourceCarried = other.gameObject;
-            job = "Store";
-            performingJob = false;
-            other.transform.SetParent(this.transform);
-        }
 
-    }
 
-    public void PerformJobs()
-    {
-
-        if (job == "" && performingJob == false)
-        {
-            closest = Mathf.Infinity;
-            number = -1;
-            for (int i = 0; i < GameObject.FindGameObjectsWithTag("Resource").Length; i++)
-            {
-                //this check should be done before the job is set
-                if (Vector3.Distance(this.transform.position, GameObject.FindGameObjectsWithTag("Resource")[i].transform.position) < closest && !GameObject.FindGameObjectsWithTag("Resource")[i].GetComponent<ResourceChunk>().isTaken)
-                {
-                    closest = Vector3.Distance(this.transform.position, GameObject.FindGameObjectsWithTag("Resource")[i].transform.position);
-                    number = i;
-                }
-            }
-            if (number != -1)
-            {
-                navAgent.destination = GameObject.FindGameObjectsWithTag("Resource")[number].transform.position;
-                GameObject.FindGameObjectsWithTag("Resource")[number].GetComponent<ResourceChunk>().isTaken = true;
-                performingJob = true;
-            }
-        }
-
-        if (job == "Store" && performingJob == false)
-        {
-            closest = Mathf.Infinity;
-            number = -1;
-            for (int i = 0; i < GameObject.FindGameObjectsWithTag("StorageLocation").Length; i++)
-            {
-                //this check should be done before the job is set
-                    if (GameObject.FindGameObjectsWithTag("StorageLocation")[i].GetComponent<Storage>().storing == resourceCarried.GetComponent<ResourceChunk>().resource.resource)
-                    {
-                        if ((GameObject.FindGameObjectsWithTag("StorageLocation")[i].GetComponent<Storage>().maxStored - GameObject.FindGameObjectsWithTag("StorageLocation")[i].GetComponent<Storage>().stored) > resourceCarried.GetComponent<ResourceChunk>().resource.amount)
-                        {
-                            if (Vector3.Distance(this.transform.position, GameObject.FindGameObjectsWithTag("StorageLocation")[i].transform.position) < closest)
-                            {
-                                closest = Vector3.Distance(this.transform.position, GameObject.FindGameObjectsWithTag("StorageLocation")[i].transform.position);
-                                number = i;
-                                print("Found Destination");            
-                            }
-                        }
-                    }
-            }
-            if (number != -1)
-            {
-                print("Set Destination");
-                navAgent.destination = GameObject.FindGameObjectsWithTag("StorageLocation")[number].transform.position;
-                performingJob = true;
-            }
-        }
-    }
     public IEnumerator ReadyAttack()
     {
 
@@ -419,31 +335,7 @@ public class PawnController : MonoBehaviour
         isInCombat = true;
     }
     public bool CheckDead()
-    {
-        if (satiation <= 0)
-        {
-            starving = true;
-        }
-        else
-        {
-            starving = false;
-        }
-        if (Hydration <= 0)
-        {
-            thirsty = true;
-        }
-        else
-        {
-            thirsty = false;
-        }
-        if (rest <= 0)
-        {
-            tired = true;
-        }
-        else
-        {
-            tired = false;
-        }
+    {    
         if (hP <= 0)
         {
             StopAllCoroutines();
@@ -459,18 +351,6 @@ public class PawnController : MonoBehaviour
     private IEnumerator AdjustFatigue()
     {
         yield return new WaitForSeconds(0.1f);
-       if (satiation > 0)
-        {
-            satiation -= 0.01f;
-        }
-        if (Hydration > 0)
-        {
-            Hydration -= 0.015f;
-        }
-        if (rest > 0)
-        {
-            rest -= 0.01f;
-        }
         if (navAgent.velocity.sqrMagnitude > 0.2)
         {
             if (stamina <= 30 )
@@ -491,18 +371,6 @@ public class PawnController : MonoBehaviour
             }
           
 
-        }
-        else if(stamina <= 100 && !tired)
-        {
-            stamina += 0.04f * (satiation/100);
-        }
-        if (starving)
-        {
-            hP -= 0.005f;
-        }
-        if (thirsty)
-        {
-            hP -= 0.005f;
         }
         StartCoroutine("AdjustFatigue");
     }
