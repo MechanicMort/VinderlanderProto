@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdb6e57082f4ac649b90aaa008aa3150, type: 3}
+  m_Name: Tutorial1 - Movement
+  m_EditorClassIdentifier: 
+  questName: Tutorial 1 - Movement
+  currentObjective: Move
+  questDescription: Use WASD for directional movement
+  questSteps: 1
+  Reward: {fileID: 8770357394892899767, guid: 580f59ae530cfe74595c2cb3f59041a2, type: 3}
+  questSystem: {fileID: 0}
+  orderIn: 0

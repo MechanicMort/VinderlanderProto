@@ -8,8 +8,12 @@ using TMPro;
 public class GameController : MonoBehaviour
 {
 
-    public GameObject timeDisplay;
+    public TextMeshProUGUI timeDisplay;
+    public TextMeshProUGUI moneyDisplay;
 
+
+
+    public int money = 10;
     public float timeOfDay;
     public float timeStep = 0.1f;
 
@@ -22,8 +26,17 @@ public class GameController : MonoBehaviour
         {
             timeOfDay = 0;
         }
-        timeDisplay.GetComponent<TextMeshProUGUI>().text = timeOfDay.ToString();
         StartCoroutine("MoveTime");
+    }
+
+    private void Start()
+    {
+        StartCoroutine("MoveTime");
+    }
+    private void Update()
+    {
+        moneyDisplay.text = money.ToString();
+        timeDisplay.text = timeOfDay.ToString();
     }
 
 }

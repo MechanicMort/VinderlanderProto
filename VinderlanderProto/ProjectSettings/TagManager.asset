@@ -15,6 +15,7 @@ TagManager:
   - NameGen
   - Content
   - Resource
+  - QuestHolder
   layers:
   - Default
   - TransparentFX

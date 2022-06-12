@@ -122,16 +122,15 @@ public class PawnController : MonoBehaviour
     {
         if (!navAgent.isActiveAndEnabled)
         {
-            int layerMask = 1 << 9;
 
             RaycastHit hit;
 
-            if (Physics.Raycast(transform.position, transform.up, out hit, 100000, layerMask))
+            if (Physics.Raycast(transform.position, transform.up, out hit, 100000, LayerMask.GetMask("Ground")))
             {
                 transform.position = hit.point;
             }
 
-            if (Physics.Raycast(transform.position, -transform.up, out hit, 100000, layerMask))
+            if (Physics.Raycast(transform.position, -transform.up, out hit, 100000, LayerMask.GetMask("Ground")))
             {
                 transform.position = hit.point;
             }
