@@ -377,6 +377,7 @@
 "Assets/PlayableFuture/Name_And_Place_Generator/DotNetRandomNameGenerator/RandomNameGeneratorLibrary/RandomPersonNameExtensions.cs"
 "Assets/PlayableFuture/Name_And_Place_Generator/DotNetRandomNameGenerator/RandomNameGeneratorLibrary/RandomPlaceNameExtensions.cs"
 "Assets/Scripts/Enemies/EnemyController.cs"
+"Assets/Scripts/Enemies/EnemySword.cs"
 "Assets/Scripts/msc/GameController.cs"
 "Assets/Scripts/msc/LockMouse.cs"
 "Assets/Scripts/msc/LookAtPlayer.cs"

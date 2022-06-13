@@ -6,6 +6,8 @@ using TMPro;
 
 public class CombatController : MonoBehaviour
 {
+    public float hp = 100;
+
     public Image left;
     public Image right;
     public Image up;
@@ -35,6 +37,16 @@ public class CombatController : MonoBehaviour
 
 
     }
+
+    public void TakeDamage(float dmg)
+    {
+        if (attackType!= "block")
+        {
+            hp -= dmg;
+        }
+    }
+
+
     void Update()
     {
 
@@ -52,6 +64,15 @@ public class CombatController : MonoBehaviour
             up.enabled = true;
             down.enabled = true;
             centre.enabled = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            attackType = "none";
+            right.enabled = false;
+            left.enabled = false;
+            up.enabled = false;
+            down.enabled = false;
+            centre.enabled = false;
         }
         else if (Input.GetKey(KeyCode.Mouse0))
         {

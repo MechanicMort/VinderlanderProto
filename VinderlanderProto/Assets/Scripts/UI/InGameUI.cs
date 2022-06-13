@@ -6,6 +6,9 @@ using TMPro;
 
 public class InGameUI : MonoBehaviour
 {
+    public Image playerHpDisplay;
+    public GameObject player;
+   
     public GameObject movementOrders;
     public GameObject rotationOrders;
     public GameObject formationOrders;
@@ -35,6 +38,7 @@ public class InGameUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         movementOrders.SetActive(false);
         rotationOrders.SetActive(false);
         formationOrders.SetActive(false);
@@ -45,6 +49,7 @@ public class InGameUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerHpDisplay.fillAmount = player.GetComponent<CombatController>().hp / 100;
         Orders();
         SoundTheHorn();
         AddUnits();
