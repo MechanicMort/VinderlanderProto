@@ -16,6 +16,7 @@ TagManager:
   - Content
   - Resource
   - QuestHolder
+  - Item
   layers:
   - Default
   - TransparentFX

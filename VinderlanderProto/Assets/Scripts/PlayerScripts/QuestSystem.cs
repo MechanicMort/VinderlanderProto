@@ -6,7 +6,7 @@ using TMPro;
 
 public class QuestSystem : MonoBehaviour
 {
-
+    private PlayerInventory playerInventory;
     public TextMeshProUGUI questObjective;
     public TextMeshProUGUI questName;
     public TextMeshProUGUI questDescription;
@@ -16,6 +16,7 @@ public class QuestSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerInventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
         quests = new Quest[GameObject.FindGameObjectsWithTag("QuestHolder").Length];
         for (int i = 0; i < GameObject.FindGameObjectsWithTag("QuestHolder").Length; i++)
         {
