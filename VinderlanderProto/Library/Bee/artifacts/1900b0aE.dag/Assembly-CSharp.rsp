@@ -388,6 +388,7 @@
 "Assets/Scripts/msc/ResourceChunk.cs"
 "Assets/Scripts/msc/Shop.cs"
 "Assets/Scripts/msc/StayOnPlane.cs"
+"Assets/Scripts/msc/UIItemHolder.cs"
 "Assets/Scripts/PawnFormations/FlagFollowFormation.cs"
 "Assets/Scripts/PawnFormations/FormationManager.cs"
 "Assets/Scripts/PawnFormations/PawnController.cs"

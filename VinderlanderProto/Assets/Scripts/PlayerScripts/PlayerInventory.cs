@@ -18,6 +18,17 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+   public void RefillEmpty()
+    {
+        for (int i = 0; i < inventory.Length; i++)
+        {
+            if (inventory[i] == null)
+            {
+                inventory[i] = Instantiate(emptyItem);
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

@@ -17,6 +17,8 @@ TagManager:
   - Resource
   - QuestHolder
   - Item
+  - Empty
+  - InventoryManager
   layers:
   - Default
   - TransparentFX
