@@ -24,6 +24,7 @@ public class InGameUI : MonoBehaviour
 
     public GameObject unitCard;
     public GameObject UnitCardTray;
+    public GameObject UnitCardTrayContent;
 
 
     private Vector3 moveTo;
@@ -59,9 +60,9 @@ public class InGameUI : MonoBehaviour
 
 
     public void UnitCards() {
-        for (int i = 0; i < UnitCardTray.gameObject.transform.childCount; i++)
+        for (int i = 0; i < UnitCardTrayContent.gameObject.transform.childCount; i++)
         {
-          Destroy(UnitCardTray.gameObject.transform.GetChild(i).gameObject);
+          Destroy(UnitCardTrayContent.gameObject.transform.GetChild(i).gameObject);
         }
    
         for (int i = 0; i < SelectedUnits.Count; i++)
@@ -70,7 +71,7 @@ public class InGameUI : MonoBehaviour
       
             UnitCardTemp = Instantiate(SelectedUnits[i].GetComponent<FormationManager>().UnitCard);
             UnitCardTemp.GetComponent<UnitCard>().FormationManager = SelectedUnits[i];
-            UnitCardTemp.transform.SetParent(UnitCardTray.transform,true);
+            UnitCardTemp.transform.SetParent(UnitCardTrayContent.transform,true);
            
         }
     }
@@ -109,25 +110,50 @@ public class InGameUI : MonoBehaviour
              
                 }
             }
+            else if (Physics.Raycast(ray, out hit, 100000, LayerMask.GetMask("Default")))
+            {
+                //  Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+                if (hit.collider.gameObject.tag == "Person")
+                {
+                    if (hit.collider.gameObject.GetComponent<PawnController>().Formation != null)
+                    {
+                        if (SelectedUnits.Contains(hit.collider.gameObject.GetComponent<PawnController>().Formation))
+                        {
+                            SelectedUnits.Add(hit.collider.gameObject.GetComponent<PawnController>().Formation);
+                            UnitCards();
+                        }
+                    }
+
+
+                }
+            }
         }
         else if (Input.GetKey(KeyCode.Mouse2))
         {
-            int layerMask = 1 << 7;
-
             RaycastHit hit;
             Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, 100000,  layerMask))
+            if (Physics.Raycast(ray, out hit, 100000, LayerMask.GetMask("Formations")))
             {
-
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+                // Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
                 if (hit.collider.gameObject.tag == "Formation")
                 {
-                    if (hit.collider.gameObject.transform.parent != null)
-                    {
-                        if (SelectedUnits.Contains(hit.collider.gameObject.transform.parent.gameObject))
+                       if (SelectedUnits.Contains(hit.collider.gameObject))
                         {
-                            SelectedUnits.Remove(hit.collider.gameObject.transform.parent.gameObject);
+                            SelectedUnits.Remove(hit.collider.gameObject);
+                            UnitCards();
+                        }                   
+                }
+            }
+            else if (Physics.Raycast(ray, out hit, 100000, LayerMask.GetMask("Default")))
+            {
+              //  Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+                if (hit.collider.gameObject.tag == "Person")
+                {
+                    if (hit.collider.gameObject.GetComponent<PawnController>().Formation != null)
+                    {
+                        if (SelectedUnits.Contains(hit.collider.gameObject.GetComponent<PawnController>().Formation))
+                        {
+                            SelectedUnits.Remove(hit.collider.gameObject.GetComponent<PawnController>().Formation);
                             UnitCards();
                         }
                     }
@@ -141,46 +167,7 @@ public class InGameUI : MonoBehaviour
 
     public void Orders()
     {
-
-        // DoOrder();
-
-        // 1 open movement orders 
-        if (Input.GetKeyDown(KeyCode.Escape) && isMenu == false && baseOrders.activeInHierarchy)
-        {
-             baseOrders.SetActive(false);
-        }
-        else if (Input.GetKeyDown(KeyCode.F1) && isMenu == false && !baseOrders.activeInHierarchy)
-        {
-            isMenu = false;
-            baseOrders.SetActive(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1) && isMenu == false)
-        {
-            isMenu = true;
-            movementOrders.SetActive(true);
-            baseOrders.SetActive(false);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && isMenu == false)
-        {
-            isMenu = true;
-            rotationOrders.SetActive(true);
-            baseOrders.SetActive(false);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3) && isMenu == false)
-        {
-            isMenu = true;
-            formationOrders.SetActive(true);
-            baseOrders.SetActive(false);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4) && isMenu == false)
-        {
-            isMenu = true;
-            mscOrders.SetActive(true);
-            baseOrders.SetActive(false);
-        }
-
-        // CheckActive();
-        if (movementOrders.activeInHierarchy == true)
+        if (movementOrders.activeInHierarchy == true && isMenu == true)
         {
 
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -190,10 +177,10 @@ public class InGameUI : MonoBehaviour
                 movementOrders.SetActive(false);
                 baseOrders.SetActive(true);
             }
-    
+
             else if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                movementOrdersTxt.text += "";
+                movementOrdersTxt.text = "Movement Order Set:";
                 string orderType = "MoveTo";
                 RaycastHit hit;
 
@@ -205,18 +192,18 @@ public class InGameUI : MonoBehaviour
                     {
                         if (i > 0)
                         {
-                            Vector3 relativeDistance = SelectedUnits[i-1].transform.position - SelectedUnits[i].transform.position;
+                            Vector3 relativeDistance = SelectedUnits[i - 1].transform.position - SelectedUnits[i].transform.position;
                             moveTo -= relativeDistance;
                         }
                         SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(moveTo, orderType);
                     }
 
                 }
-          
+
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                movementOrdersTxt.text += "";
+
                 string orderType = "Attack";
                 int layerMask = 1 << 11;
 
@@ -227,6 +214,7 @@ public class InGameUI : MonoBehaviour
                 {
                     if (hit.transform.tag == "EnemyFormation")
                     {
+                        movementOrdersTxt.text += "Attack Order Set:";
                         GameObject moveTo = hit.transform.gameObject;
                         movementOrdersTxt.text = "Orders are :" + "";
 
@@ -241,10 +229,10 @@ public class InGameUI : MonoBehaviour
 
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                movementOrdersTxt.text += "";
+                movementOrdersTxt.text += "Advance Order Set:";
                 string orderType = "Advance";
 
-                moveTo = new Vector3(0,0,10);
+                moveTo = new Vector3(0, 0, 10);
                 for (int i = 0; i < SelectedUnits.Count; i++)
                 {
                     SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(moveTo, orderType);
@@ -252,7 +240,7 @@ public class InGameUI : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                movementOrdersTxt.text += "";
+                movementOrdersTxt.text += "Retreat Order Set:";
                 string orderType = "Advance";
 
                 moveTo = new Vector3(0, 0, -10);
@@ -260,8 +248,10 @@ public class InGameUI : MonoBehaviour
                 {
                     SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(moveTo, orderType);
                 }
-            }  else if (Input.GetKeyDown(KeyCode.Alpha6))
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
             {
+                movementOrdersTxt.text += "Run Order Set:";
                 string orderType = "Run";
 
                 moveTo = new Vector3(0, 0, 0);
@@ -271,50 +261,7 @@ public class InGameUI : MonoBehaviour
                 }
             }
         }
-
-        if (formationOrders.activeInHierarchy == true)
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                isMenu = false;
-                formationOrdersTxt.text = "No Order Currently Selected:";
-                baseOrders.SetActive(true);
-                formationOrders.SetActive(false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                for (int i = 0; i < SelectedUnits.Count; i++)
-                {
-                    Vector3 Formation;
-                    Formation = new Vector3(1, 0, 0);
-                    SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(Formation, "FormationChange");
-                }
-
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                for (int i = 0; i < SelectedUnits.Count; i++)
-                {
-                    Vector3 Formation;
-                    Formation = new Vector3(2, 0, 0);
-                    SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(Formation, "FormationChange");
-                }
-
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                for (int i = 0; i < SelectedUnits.Count; i++)
-                {
-                    Vector3 Formation;
-                    Formation = new Vector3(3, 0, 0);
-                    SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(Formation, "FormationChange");
-                }
-
-            }
-        }
-
-        if (rotationOrders.activeInHierarchy == true)
+        else if (rotationOrders.activeInHierarchy == true && isMenu == true)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -323,7 +270,7 @@ public class InGameUI : MonoBehaviour
                 rotationOrders.SetActive(false);
                 baseOrders.SetActive(true);
             }
-        
+
             else if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 string orderType = "LookAt";
@@ -333,9 +280,9 @@ public class InGameUI : MonoBehaviour
                 Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
 
                 if (Physics.Raycast(ray, out hit, layerMask, 1000))
-                   {
-                        moveTo = hit.point;
-                   }
+                {
+                    moveTo = hit.point;
+                }
 
                 for (int i = 0; i < SelectedUnits.Count; i++)
                 {
@@ -345,7 +292,7 @@ public class InGameUI : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 string orderType = "Rotate";
-                moveTo = new Vector3(0,15,0);
+                moveTo = new Vector3(0, 15, 0);
                 for (int i = 0; i < SelectedUnits.Count; i++)
                 {
                     SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(moveTo, orderType);
@@ -371,18 +318,102 @@ public class InGameUI : MonoBehaviour
             }
 
         }
+        else if (formationOrders.activeInHierarchy == true && isMenu == true)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                isMenu = false;
+                formationOrdersTxt.text = "No Order Currently Selected:";
+                baseOrders.SetActive(true);
+                formationOrders.SetActive(false);
+            }
 
-        if (mscOrders.activeInHierarchy == true)
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                for (int i = 0; i < SelectedUnits.Count; i++)
+                {
+                    formationOrdersTxt.text = "Changing Formation to:...";
+                    Vector3 Formation;
+                    Formation = new Vector3(1, 0, 0);
+                    SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(Formation, "FormationChange");
+                }
+
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                for (int i = 0; i < SelectedUnits.Count; i++)
+                {
+                    formationOrdersTxt.text = "Changing Formation to:...";
+                    Vector3 Formation;
+                    Formation = new Vector3(2, 0, 0);
+                    SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(Formation, "FormationChange");
+                }
+
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                for (int i = 0; i < SelectedUnits.Count; i++)
+                {
+                    formationOrdersTxt.text = "Changing Formation to:...";
+                    Vector3 Formation;
+                    Formation = new Vector3(3, 0, 0);
+                    SelectedUnits[i].GetComponent<FormationManager>().ReceiveOrder(Formation, "FormationChange");
+                }
+
+            }
+        }
+
+        else if (mscOrders.activeInHierarchy == true && isMenu == true)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 isMenu = false;
                 mscOrdersTxt.text = "No Order Currently Selected:";
                 mscOrders.SetActive(false);
-                baseOrders.SetActive(true); 
+                baseOrders.SetActive(true);
             }
 
         }
+
+
+        // close orders
+        else  if (Input.GetKeyDown(KeyCode.Escape) && isMenu == false && baseOrders.activeInHierarchy)
+        {
+             baseOrders.SetActive(false);
+             UnitCardTray.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.F1) && isMenu == false && !baseOrders.activeInHierarchy)
+        {
+            isMenu = false;
+            baseOrders.SetActive(true);
+            UnitCardTray.SetActive(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1) && isMenu == false && baseOrders.activeInHierarchy)
+        {
+            isMenu = true;
+            movementOrders.SetActive(true);
+            baseOrders.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && isMenu == false && baseOrders.activeInHierarchy)
+        {
+            isMenu = true;
+            rotationOrders.SetActive(true);
+            baseOrders.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && isMenu == false && baseOrders.activeInHierarchy)
+        {
+            isMenu = true;
+            formationOrders.SetActive(true);
+            baseOrders.SetActive(false);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && isMenu == false && baseOrders.activeInHierarchy)
+        {
+            isMenu = true;
+            mscOrders.SetActive(true);
+            baseOrders.SetActive(false);
+        }
+
+
 
 
 

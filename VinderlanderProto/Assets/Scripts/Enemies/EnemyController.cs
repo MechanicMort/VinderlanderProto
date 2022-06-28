@@ -164,7 +164,7 @@ public class EnemyController : MonoBehaviour
         nav.destination = player.transform.position;
         if (hp <= 0)
         {
-            this.gameObject.SetActive(false);
+            this.transform.parent.gameObject.SetActive(false);
         }
     }
 }

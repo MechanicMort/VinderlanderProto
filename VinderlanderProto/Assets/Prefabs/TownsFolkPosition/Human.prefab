@@ -125,12 +125,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animController: {fileID: 6291351985189875701}
+  currentVelocity: 0
+  isWalking: 0
   pawnName: 
-  gender: '?'
+  gender: Male
+  age: Adult
   timeOfDay: 0
   closest: 0
   number: 0
-  resourceCarried: {fileID: 0}
   pawnMeleeRange: 4
   pawnMeleeDamage: 25
   pawnMeleePierce: 0.4
@@ -144,10 +146,10 @@ MonoBehaviour:
   hPMax: 100
   stamina: 100
   staminaMax: 100
-  pawnMoveSpeed: 12
-  walkingSpeed: 12
-  runningSpeed: 6
-  chargeSpeed: 10
+  pawnMoveSpeed: 3
+  walkingSpeed: 2
+  runningSpeed: 5
+  chargeSpeed: 6
   isInRange: 0
   isInCombat: 0
   isAttacking: 0
@@ -157,6 +159,7 @@ MonoBehaviour:
   inFormation: 1
   isOrderComplete: 0
   FiringPos: {fileID: 6862524168445997918}
+  Formation: {fileID: 0}
   NameGen: {fileID: 0}
   movingTo: {fileID: 6766915449651172983, guid: 1ab682348c415bd4cbf1d262256d8121,
     type: 3}

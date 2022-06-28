@@ -9,18 +9,16 @@ public class PawnController : MonoBehaviour
 {
     [Header("Animation")]
     public Animator animController;
+    public float currentVelocity;
+    public bool isWalking;
     [Header("Living Stats")]
 
     public string pawnName;
-    //Male
-    //Female
     public string gender = "Male";
+    public string age = "Adult";
     public float timeOfDay;
     public float closest;
     public int number;
-
-
-    public GameObject resourceCarried;
 
     [Header("Combat Stats")]
     public float pawnMeleeRange;
@@ -67,6 +65,7 @@ public class PawnController : MonoBehaviour
 
     [Header("GameObjects")]
     public GameObject FiringPos;
+    public GameObject Formation;
     public GameObject NameGen;
     public GameObject movingTo;
     public GameObject Quiver;
@@ -84,6 +83,7 @@ public class PawnController : MonoBehaviour
         personCard.GetComponent<PersonCard>().myPerson = this.GetComponent<PawnController>();
         NameGen = GameObject.FindGameObjectWithTag("NameGen");
         pawnName = NameGen.GetComponent<NameGenerator>().GenerateRandomNameMale();
+        gameObject.name = pawnName;
         isAttacking = false; 
         hP = hPMax;
         stamina = staminaMax;
@@ -390,7 +390,7 @@ public class PawnController : MonoBehaviour
     public void CheckMarker()
     {
    
-        if (Vector3.Distance(this.transform.position, movingToInstance.transform.position) <= 2.8f)
+        if (Vector3.Distance(this.transform.position, movingToInstance.transform.position) <= 4f)
         {
             movingToInstance.SetActive(false);                                                                                                                                                                                         
             isOrderComplete = true;

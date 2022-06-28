@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdb6e57082f4ac649b90aaa008aa3150, type: 3}
+  m_Name: Tutorial3-KillEnemy
+  m_EditorClassIdentifier: 
+  questName: CombatPractice
+  currentObjective: Defeat The drill Sargent
+  questDescription: Practice combat
+  questSteps: 1
+  Reward: {fileID: 3521071593111579059, guid: f24f9b640fa0f34468ab663fc8f50ae3, type: 3}
+  questSystem: {fileID: 0}
+  orderIn: 2

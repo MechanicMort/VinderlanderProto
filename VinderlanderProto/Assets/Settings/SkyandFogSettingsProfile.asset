@@ -108,9 +108,9 @@ MonoBehaviour:
     m_Value: {fileID: 8900000, guid: 5da930ab618c2314fa2c41fb9e52b80d, type: 3}
   spaceEmissionMultiplier:
     m_OverrideState: 1
-    m_Value: 2.01
+    m_Value: 2.59
   spaceRotation:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {x: 0, y: 0, z: 0}
   colorSaturation:
     m_OverrideState: 0
@@ -192,13 +192,13 @@ MonoBehaviour:
     m_Value: {x: 0, y: 0}
   lowestCloudAltitude:
     m_OverrideState: 1
-    m_Value: 228.1
+    m_Value: 1805.74
   cloudThickness:
     m_OverrideState: 1
-    m_Value: 10535.87
+    m_Value: 8523.3
   fadeInMode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   fadeInStart:
     m_OverrideState: 1
     m_Value: 0
@@ -210,7 +210,7 @@ MonoBehaviour:
     m_Value: 64
   numLightSteps:
     m_OverrideState: 1
-    m_Value: 6
+    m_Value: 8
   cloudMap:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -452,7 +452,7 @@ MonoBehaviour:
     m_Value: 0
   temporalAccumulationFactor:
     m_OverrideState: 1
-    m_Value: 0.95
+    m_Value: 1
   ghostingReduction:
     m_OverrideState: 1
     m_Value: 0
@@ -886,22 +886,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b24b200358312b4fa1004e2431c2f1f, type: 3}
   m_Name: ShadowsMidtonesHighlights
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   shadows:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1, z: 1, w: -0.66750896}
   midtones:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1, z: 1, w: 0.15371647}
   highlights:
-    m_OverrideState: 0
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_OverrideState: 1
+    m_Value: {x: 0.9306667, y: 0.84000003, z: 1, w: 0.10317929}
   shadowsStart:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   shadowsEnd:
-    m_OverrideState: 0
-    m_Value: 0.3
+    m_OverrideState: 1
+    m_Value: 0.12
   highlightsStart:
     m_OverrideState: 0
     m_Value: 0.55

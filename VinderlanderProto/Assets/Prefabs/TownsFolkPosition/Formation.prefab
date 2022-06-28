@@ -146,6 +146,7 @@ MonoBehaviour:
   UnitSize: 10
   unitDepth: 0
   unitWidth: 0
+  iDone: 0
   UnitManaged: []
   UnitPawn: {fileID: 2982396613703700004, guid: 8a2eb91b8719af943a47767f073242fd,
     type: 3}
@@ -154,6 +155,7 @@ MonoBehaviour:
   Forward: {fileID: 0}
   Player: {fileID: 0}
   currentShape: 0
+  isOrderComplete: 0
   CurrentFormationHp: 0
   MaxFormationHp: 0
   CurrentFormationStamina: 0

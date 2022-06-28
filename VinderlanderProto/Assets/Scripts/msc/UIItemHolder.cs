@@ -7,14 +7,9 @@ public class UIItemHolder : MonoBehaviour
 {
     public GameObject inWorldItem;
     public InventoryManager InventoryManager;
-    public Button button;
-
-    private void Start()
-    {
-        InventoryManager = GameObject.FindGameObjectWithTag("InventoryManager").GetComponent<InventoryManager>();
-    }
     public void SetSelectedItem()
     {
+        InventoryManager = GameObject.FindGameObjectWithTag("InventoryManager").GetComponent<InventoryManager>();
         InventoryManager.selectedObject = inWorldItem;
     }
 }

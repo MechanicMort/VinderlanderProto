@@ -31,6 +31,7 @@ public class FormationManager : MonoBehaviour
     private float Morale;
 
     private bool isBroken;
+    public bool isOrderComplete;
 
     public float CurrentFormationHp;
     public float MaxFormationHp; 
@@ -49,7 +50,8 @@ public class FormationManager : MonoBehaviour
     public GameObject[] StoredFormations = new GameObject[3];
     public GameObject[] EdgeOfMapLocations = new GameObject[3];
 
-    private ArrayList Orders = new ArrayList();
+    [Header("Orders")]
+    public ArrayList Orders = new ArrayList();
 
     public GameObject UnitCard;
 
@@ -77,6 +79,7 @@ public class FormationManager : MonoBehaviour
             UnitPawn = Instantiate(UnitPawn);
             UnitPawn.transform.position = this.gameObject.transform.position;
             UnitManaged.Add(UnitPawn);
+            UnitPawn.GetComponent<PawnController>().Formation = this.gameObject;
         }
         MaxFormationHp = GetUnitMaxHp();
         MaxFormationStamina = GetUnitMaxStamina();
@@ -144,6 +147,7 @@ public class FormationManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isOrderComplete= CheckOrdersComplete();
 
         if (UnitManaged.Count != 0)
         {
@@ -250,7 +254,7 @@ public class FormationManager : MonoBehaviour
 
     private void UpdateShapeLength()
     {
-        FormationShape.transform.localScale = new Vector3(formationSpacingx,1,(formationSpacingz * unitDepth)/7);
+        FormationShape.transform.localScale = new Vector3(formationSpacingx,3.5f,(formationSpacingz * unitDepth)/7);
     }
 
 

@@ -48,8 +48,56 @@ public class InventoryManager : MonoBehaviour
 
     }
 
-    public void AddItem()
+    public void AddItem(GameObject item)
     {
+        if (item.tag == "Item")
+        {
+            for (int i = 0; i < playerInventory.inventory.Length; i++)
+            {
+              
+                if (playerInventory.inventory[i].tag == "Empty")
+                {
+                    playerInventory.inventory[i] = item;
+                    item.transform.gameObject.SetActive(false);
+                    break;
+                }
+            }
+        }
+
+    }
+    public void PurchaseItem()
+    {
+        if (selectedObject.tag == "Item")
+        {
+            if (gameController.money >= selectedObject.GetComponent<InWorldItemContainer>().item.worth)
+            {
+                for (int i = 0; i < playerInventory.inventory.Length; i++)
+                {
+                    if (playerInventory.inventory[i].tag == "Empty")
+                    {
+                        for (int x = 0; x < shop.inventory.Length; x++)
+                        {
+                            print(shop.inventory[x]);
+                            if (shop.inventory[x] == selectedObject)
+                            {
+                                playerInventory.inventory[i] = selectedObject;
+                                selectedObject.transform.gameObject.SetActive(false);
+                                gameController.money -= selectedObject.GetComponent<InWorldItemContainer>().item.worth;
+
+                                selectedObject = null;
+                                shop.inventory[x] = null;
+                                shop.RefillEmpty();
+                                shop.OnEnable();
+                                OnEnable();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+          
+        }
 
     }
     public void SellItem()
