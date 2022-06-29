@@ -192,10 +192,10 @@ MonoBehaviour:
     m_Value: {x: 0, y: 0}
   lowestCloudAltitude:
     m_OverrideState: 1
-    m_Value: 1805.74
+    m_Value: 100
   cloudThickness:
     m_OverrideState: 1
-    m_Value: 8523.3
+    m_Value: 10000
   fadeInMode:
     m_OverrideState: 1
     m_Value: 0
@@ -222,7 +222,7 @@ MonoBehaviour:
     m_Value: 0
   cloudPreset:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   cumulusMap:
     m_OverrideState: 1
     m_Value: {fileID: 0}
